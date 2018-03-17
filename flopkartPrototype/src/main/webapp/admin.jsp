@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="com.iiitb.ooadvoid.AccessProperties"%>
-    <%@ page import="com.iiitb.ooadvoid.client.FlopkartCategoryClient" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +13,8 @@
   background-size: 100%;">
 	<header>
 		<nav class="nav navbar-default" style="background-color:#027cd5">
-			<img class="logo" src="./images/flopkartLogo.jpg">
+			<a href="index.jsp"><img class="logo" src="./images/flopkartLogo.jpg"></a>
+			<div style="float:right; padding-top:30px; padding-right: 5px"><a style="text-decoration:underline; color:white;font-size: 20px; font-weight:500;" href="adminDeals.jsp">Click here to add new deal category</a></div>
 		</nav>
 	</header>
 	
@@ -22,7 +22,7 @@
 	<div class="col-md-6">
 		<div class="container" style="text-align: center; width: 400px">
 			<h3 style="color:white">Enter new category</h3><br/>
-			<form action="success.jsp">
+			<form>
 				<input class="form-control" type="text" id="catName"
 					placeholder="Enter category name"> 
 				<br/>
@@ -36,6 +36,8 @@
 			<h3 style="color:white">Enter new subcategory</h3><br/>
 			<form>
 				<div id="content"></div>
+				<div style="background-color:blue; border-radius: 25px; font-size:20px; color:white" onclick="DispSubCat()">Subcategories
+				<div id="SubCat"></div></div>
 				<br /> <input class="form-control" type="text" id="subcatName"
 					placeholder="Enter subcategory name"> 
 				<br/>
@@ -60,13 +62,13 @@
 <script>
 $(document).ready(function(){
 
-    <% FlopkartCategoryClient client = new FlopkartCategoryClient(); %>
+<%--     <% FlopkartCategoryClient client = new FlopkartCategoryClient(); %> --%>
 <%-- 	String test1 = test.getImageURL();%> --%>
 <%-- 	var test = "<%=test1%>"; --%>
 // 	alert(test);
 	fetch();
 
-})
+});
 function fetch() 
 {
     var ctxPath = "<%=request.getContextPath()%>";
@@ -77,15 +79,15 @@ function fetch()
 		url : ctxPath + "/webapi/categories",
 		dataType : "json", // data type of response
 		success : function(result){
-			var data="<select id='catId'>"+"<option>Select a category</option>";
-            for(i=0;i<result.length;i++){
+			var data="<select id='catId'>"+"<option value=' "+ 0 +" '>Select a category</option>";
+            for(var i in result){
                data+="<option value='"+result[i].id+"'>"+result[i].categoryName+"</option>";
             }
-            data += "</select>"
+            data += "</select>";
             $('#content').html(data);
     	},
     	error:function() {
-        	alert("error occurred");
+        	//alert("error occurred");
     	}
 	});
 }
@@ -112,6 +114,17 @@ function formToJSON1()
 	return flopkartCat;
 }
 
+function formToJSON2()
+{
+	var categoryId = $("#catId").val();
+	var subcategoryName = "";
+	var flopkartSubCat = JSON.stringify({
+	    "categoryId" : categoryId,
+	    "subcategoryName" : subcategoryName
+	});
+	return flopkartSubCat;
+}
+
 function insertSubcategory() 
 {
 	var ctxPath = "<%=request.getContextPath()%>";
@@ -121,15 +134,16 @@ function insertSubcategory()
 			contentType : 'application/json',
 			url : ctxPath + "/webapi/subcategories/create",
 			data : formToJSON(),
-			success : render,
-			error: function(err) {
+			success : render(),
+			error: function() {
 				alert(JSON.stringify(err));
 			}
 	});
 }
 
 function render(){
-	alert("BYEE");
+	alert("Succesful entry into the database");
+	window.location.reload(true);
 }
 
 function insertCategory()
@@ -140,8 +154,44 @@ function insertCategory()
 			type : 'POST',
 			contentType : 'application/json',
 			url : ctxPath + "/webapi/categories/create",
-			data : formToJSON1()
+			data : formToJSON1(),
+			success : render(),
+			error: function() {
+				alert(JSON.stringify(err));
+			}
 	});
+}
+
+function DispSubCat()
+{
+	var ctxPath = "<%=request.getContextPath()%>";
+	if($("#catId").val()==0)
+		{
+		    alert("Select A Category");
+		}
+	else
+	{
+	$.ajax(
+	{
+		type : 'POST',
+		contentType : 'application/json',
+		url : ctxPath + "/webapi/subcategories/categoryId",
+		dataType : "json", // data type of response
+		data : formToJSON2(),
+		success : function(result){
+			var data="";
+            for(var i in result){
+            	data+="<li style='background-color:black; text-align:left'>"+result[i].subcategoryName+"</li>";
+            }
+            data+="<div>Subcategories</div>"
+            $('#SubCat').html(data);
+    	},
+    	error:function(data,status) {
+    		alert("Data: " + data + "\nStatus: " + status);
+        	//alert("error occurred");
+    	}
+	});
+	}
 }
 </script>
 </html>

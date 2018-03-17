@@ -30,7 +30,6 @@ public class SessionUtil
 	public static Session getSession()
 	{
 		Session session = getInstance().sessionFactory.openSession();
-
 		return session;
 	}
 }

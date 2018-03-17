@@ -28,6 +28,16 @@ public class FlopkartCategoryServices
 		return category;
 	}
 
+	@GET
+	@Path("/{id}")
+	@Produces("application/json")
+	public FlopkartCategory getFlopkartCategory(@PathParam("id") int id)
+	{
+		FlopkartCategoryDAO dao = new FlopkartCategoryDAO();
+		FlopkartCategory category = dao.getFlopkartCategoryById(id);
+		return category;
+	}
+
 	
 	@POST
 	@Path("/create")
@@ -43,7 +53,7 @@ public class FlopkartCategoryServices
 	@PUT
 	@Path("/update/{id}")
 	@Consumes("application/json")
-	public Response updateFlopkart_User(@PathParam("id") int id, FlopkartCategory category)
+	public Response updateFlopkartCategory(@PathParam("id") int id, FlopkartCategory category)
 	{
 		FlopkartCategoryDAO dao = new FlopkartCategoryDAO();
 		int count = dao.updateFlopkartCategory(id, category);

@@ -129,7 +129,7 @@ label {
   background-size: 100%;">
 	<header>
 		<nav class="nav navbar-default" style="background-color:#027cd5">
-			<img class="logo" src="./images/sellerHub/seller-hub-logo.png">
+			<a href='sellerHub.jsp'><img class="logo" src="./images/sellerHub/seller-hub-logo.png"></a>
 		</nav>
 	</header>
 	
@@ -149,22 +149,30 @@ label {
               				<p>All details are mandatory</p>
 							<form action="#">
 								<div class="form-group">
-									<label>Name</label> <input class="form-control"
-										placeholder="Enter full name">
+									<label>First Name</label> <input class="form-control" id="f_name"
+										placeholder="Enter first name" required>
 								</div>
 								<div class="form-group">
-									<label>Email ID</label> <input type="email" placeholder="Enter email" class="form-control">
+									<label>Last Name</label> <input class="form-control" id="l_name"
+										placeholder="Enter last name" required>
 								</div>
 								<div class="form-group">
-									<label>Password</label> <input type="password" class="form-control"
-										placeholder="Minimum 4 characters">
+									<label>Email ID</label> <input type="email" id="email" placeholder="Enter email" class="form-control" required>
+									<div id="warning_email_new" style="color: #f2575b; position: relative; left: 10px;
+										margin: 7px 0 0;">This is not a valid Email</div>
 								</div>
 								<div class="form-group">
-									<label>Mobile Number</label> <input type="number" class="form-control"
-										maxlength="10" placeholder="Enter mobile number">
+									<label>Password</label> <input type="password" id="pass_txt" class="form-control"
+										placeholder="Minimum 4 characters" required>
+								</div>
+								<div class="form-group">
+									<label>Mobile Number</label> <input type="number" id="phone" class="form-control"
+										maxlength="10" placeholder="Enter mobile number" required>
+									<div id="warning_phone_new" style="color: #f2575b; position: relative; left: 10px;
+									 margin: 7px 0 0;">This is not a valid mobile number</div>
 								</div>
 								<p style="font-size: small;">If you have read and agree to the Terms and Conditions, please continue</p>
-								<div align="right"><button class="btn btn-primary" type="submit">Continue</button></div>
+								<div align="right"><button class="btn btn-primary" type="submit" onclick="signup('<%=request.getContextPath()%>');">Continue</button></div>
 							</form>
 						</div>
 					</div>
@@ -174,6 +182,94 @@ label {
   	</div>
   </body>
   
-<script src="./bootstrapFiles/jquery-1.11.1.min.js.download"></script> 
-<script src="./bootstrapFiles/bootstrap.min.js.download"></script> 
+<script src="./bootstrapFiles/js/jquery-1.11.1.min.js"></script>
+<script src="./bootstrapFiles/js/bootstrap.min.js"></script>
+<script src="./bootstrapFiles/js/bootstrap-hover-dropdown.min.js"></script>
+<script src="./bootstrapFiles/js/owl.carousel.min.js"></script>
+<script src="./bootstrapFiles/js/echo.min.js"></script>
+<script src="./bootstrapFiles/js/jquery.easing-1.3.min.js"></script>
+<script src="./bootstrapFiles/js/bootstrap-slider.min.js"></script>
+<script src="./bootstrapFiles/js/jquery.rateit.min.js"></script>
+<script src="./bootstrapFiles/js/bootstrap-select.min.js"></script>
+<script src="./bootstrapFiles/js/wow.min.js"></script>
+<script src="./bootstrapFiles/js/scripts.js"></script>
+<script src="./customJavascripts/cookies.js"></script>
+<script>
+$(document).ready(function(){
+	<%if(request.getParameter("emailid")!=null){ %>
+  	 	$("#email").val("<%=request.getParameter("emailid")%>");
+	<% } %>
+	<%if(request.getParameter("phoneno")!=null){ %>
+	 	$("#phone").val("<%=request.getParameter("phoneno")%>");
+	<% } %>
+	$("#warning_email_new").hide();
+	$("#warning_phone_new").hide();
+});
+
+function signupformToJSON() {
+	var fname = $("#f_name").val();
+	var lname = $("#l_name").val();
+	var email = $("#email").val();
+	var password = $("#pass_txt").val();
+	var phone = $("#phone").val();
+	var userType = "seller";
+
+	var flipkart_user = JSON.stringify({
+		"firstName" : fname,
+		"lastName" : lname,
+		"phone" : phone,
+		"email" : email,
+		"password" : password,
+		"userType" : userType
+	});
+	return flipkart_user;
+}
+
+function signup(ctxPath) {
+	var email = $("#email").val();
+	var phone = $("#phone").val();
+	if (!phone.match(/^[0-9]{10}$/)) {
+		$("#warning_phone_new").show();
+		$("#phone").css("border-color","#f2575b");
+		if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+			$("#warning_email_new").show();
+			$("#email").css("border-color","#f2575b");
+			return false;
+		}
+		return false;
+	}
+	else {
+		$("#warning_phone_new").hide();
+	}
+    if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+		$("#warning_email_new").show();
+		$("#email").css("border-color","#f2575b");
+		if (!phone.match(/^[0-9]{10}$/)) {
+			$("#warning_phone_new").show();
+			$("#phone").css("border-color","#f2575b");
+			return false;
+		}
+		return false;
+	}
+    else {
+    	$("#warning_email_new").hide();
+    }
+	$.ajax({
+		type : 'POST',
+		contentType : 'application/json',
+		url : ctxPath + "/webapi/users/create",
+		dataType : "json", // data type of response
+		data : signupformToJSON(),
+		success : renderDetails(),
+		error : function(){
+// 			alert("NOOOO");
+		}
+	});
+}
+
+function renderDetails(){
+	alert("Successfully registered new seller");
+	window.location.href="sellerHub.jsp";
+}
+</script>
 </html>

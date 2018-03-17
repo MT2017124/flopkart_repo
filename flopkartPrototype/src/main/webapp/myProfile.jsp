@@ -1,373 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@ page import="com.iiitb.ooadvoid.AccessProperties" %>
-    <%@ page import="com.iiitb.ooadvoid.CreateProperties" %>
-    <%@ page import="com.iiitb.ooadvoid.client.FlopkartCategoryClient" %>
+<%@ page import="com.iiitb.ooadvoid.AccessProperties" %>
+<%@ page import="com.iiitb.ooadvoid.CreateProperties" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<%@include file="metaContent.jsp" %>
 	<title>My Profile</title>
-		
-<!-- Bootstrap Core CSS -->
-<link rel="stylesheet" href="./bootstrapFiles/css/bootstrap.min.css">
-
-<!-- Customizable CSS -->
-<link rel="stylesheet" href="./bootstrapFiles/css/main.css">
-<link rel="stylesheet" href="./bootstrapFiles/css/blue.css">
-<link rel="stylesheet" href="./bootstrapFiles/css/owl.carousel.css">
-<link rel="stylesheet" href="./bootstrapFiles/css/owl.transitions.css">
-<link rel="stylesheet" href="./bootstrapFiles/css/animate.min.css">
-<link rel="stylesheet" href="./bootstrapFiles/css/rateit.css">
-<link rel="stylesheet" href="./bootstrapFiles/css/bootstrap-select.min.css">
-
-<!-- Icons/Glyphs -->
-<link rel="stylesheet" href="./bootstrapFiles/css/font-awesome.css">
-<link rel="stylesheet" href="./bootstrapFiles/fontawesome-all.css">
-
-<!-- Fonts -->
-<link href="./bootstrapFiles/css(3).css" rel="stylesheet" type="text/css">
-<link href="./bootstrapFiles/css(1).css" rel="stylesheet" type="text/css">
-<link href="./bootstrapFiles/css(2).css" rel="stylesheet" type="text/css">
-<style>
-	input[type="file"] 
-	{
-	    display: none;
-	}
+	<style>
 	.custom-file-upload 
 	{
-	    border: 1px solid #ccc;
-	    display: inline-block;
-	    padding: 6px 12px;
-	    cursor: pointer;
+		border: 1px solid #ccc;
+		display: inline-block;
+		padding: 6px 12px;
+		cursor: pointer;
 	}
-</style>
+	.dp .tooltiptext 
+	{
+		visibility: hidden;
+		background-color: black;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		/* Position the tooltip */
+		position: absolute;
+		z-index: 1;
+		overflow:visible;
+	}
+	.dp:hover .tooltiptext 
+	{
+	    visibility: visible;
+	}
+	</style>
 	</head>
 
 <body>
 <!-- ============================================== HEADER ============================================== -->
 
-<header class="header-style-1"> 
-  
-  <!-- ============================================== TOP MENU ============================================== -->
-  <div class="top-bar animate-dropdown">
-    <div class="container">
-      <div class="header-top-inner">
-        	<div class="cnt-account">
-				<ul class="list-unstyled">
-						<li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
-						<li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-						<li><a href="#"><i class="fa fa-shopping-cart"></i> My Cart</a></li>
-						<li><a href="#"><i class="fa fa-check"></i> Checkout</a></li>
-					</ul>
-		 </div>
-        <!-- /.cnt-account -->
-        
-        <div class="clearfix"></div>
-      </div>
-      <!-- /.header-top-inner --> 
-    </div>
-    <!-- /.container --> 
-  </div>
-  <!-- /.header-top --> 
-  <!-- ============================================== TOP MENU : END ============================================== -->
-  <div class="main-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-2 logo-holder"> 
-          <!-- ============================================================= LOGO ============================================================= -->
-          <div class="logo"> <a href="#"> <img  height="50px" src="./images/flopkartLogo.jpg" alt=""> </a> </div>
-          <!-- /.logo --> 
-          <!-- ============================================================= LOGO : END ============================================================= --> 
-          </div>
-        <!-- /.logo-holder -->
-        
-        <div class="col-xs-12 col-sm-12 col-md-8 top-search-holder"> 
-          <!-- /.contact-row --> 
-          <!-- ============================================================= SEARCH AREA ============================================================= -->
-          <div class="search-area">
-            <form>
-              <div class="control-group">
-              	<div class="row">
-              	<div class="col-md-10">
-                	<input class="search-field" placeholder="Search here..." />
-                </div>
-              	<div class="col-md-2">
-                <a class="search-button" href="#" ></a> 
-                </div>
-              </div>
-              </div>
-            </form>
-          </div>
-          <!-- /.search-area --> 
-          <!-- ============================================================= SEARCH AREA : END ============================================================= --> 
-          </div>
-        <!-- /.top-search-holder -->
-        
-        <div class="col-xs-12 col-sm-12 col-md-2 animate-dropdown top-cart-row"> 
-          <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
-          
-          <div class="dropdown dropdown-cart"> <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
-            <div class="items-cart-inner">
-              <div class="basket"> <i class="glyphicon glyphicon-shopping-cart"></i> </div>
-              <div class="basket-item-count"><span class="count">2</span></div>
-              <div class="total-price-basket"> <span class="lbl"> CART </span> </div>
-            </div>
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <div class="cart-item product-summary">
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <div class="image"> <a href="detail.html"></a> </div>
-                    </div>
-                    <div class="col-xs-7">
-                      <h3 class="name"><a href="index.php?page-detail">Simple Product</a></h3>
-                      <div class="price">$600.00</div>
-                    </div>
-                    <div class="col-xs-1 action"> <a href="#"><i class="fa fa-trash"></i></a> </div>
-                  </div>
-                </div>
-                <!-- /.cart-item -->
-                <div class="clearfix"></div>
-                <hr>
-                <div class="clearfix cart-total">
-                  <div class="pull-right"> <span class="text">Sub Total :</span><span class='price'>$600.00</span> </div>
-                  <div class="clearfix"></div>
-                  <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a> </div>
-                <!-- /.cart-total--> 
-                
-              </li>
-            </ul>
-            <!-- /.dropdown-menu--> 
-          </div>
-          <!-- /.dropdown-cart --> 
-          
-          <!-- ============================================================= SHOPPING CART DROPDOWN : END============================================================= --> </div>
-        <!-- /.top-cart-row --> 
-      </div>
-      <!-- /.row --> 
-      
-    </div>
-    <!-- /.container --> 
-    
-  </div>
-  <!-- /.main-header --> 
-  
-  <!-- ============================================== NAVBAR ============================================== -->
-  <div class="header-nav animate-dropdown">
-    <div class="container">
-      <div class="yamm navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-       <button data-target="#mc-horizontal-menu-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button"> 
-       <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-        </div>
-        <div class="nav-bg-class">
-          <div class="navbar-collapse collapse" id="mc-horizontal-menu-collapse">
-            <div class="nav-outer">
-              <ul class="nav navbar-nav">
-                <li class="active dropdown yamm-fw"> <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">Home</a> </li>
-                <li class="dropdown yamm mega-menu"> <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">Clothing</a>
-                  <ul class="dropdown-menu container">
-                    <li>
-                      <div class="yamm-content ">
-                        <div class="row">
-                          <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                            <h2 class="title">Men</h2>
-                            <ul class="links">
-                              <li><a href="#">Dresses</a></li>
-                              <li><a href="#">Shoes </a></li>
-                              <li><a href="#">Jackets</a></li>
-                              <li><a href="#">Sunglasses</a></li>
-                              <li><a href="#">Sport Wear</a></li>
-                              <li><a href="#">Blazers</a></li>
-                              <li><a href="#">Shirts</a></li>
-                            </ul>
-                          </div>
-                          <!-- /.col -->
-                          
-                          <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                            <h2 class="title">Women</h2>
-                            <ul class="links">
-                              <li><a href="#">Handbags</a></li>
-                              <li><a href="#">Jwellery</a></li>
-                              <li><a href="#">Swimwear </a></li>
-                              <li><a href="#">Tops</a></li>
-                              <li><a href="#">Flats</a></li>
-                              <li><a href="#">Shoes</a></li>
-                              <li><a href="#">Winter Wear</a></li>
-                            </ul>
-                          </div>
-                          <!-- /.col -->
-                          
-                          <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                            <h2 class="title">Boys</h2>
-                            <ul class="links">
-                              <li><a href="#">Toys and Games</a></li>
-                              <li><a href="#">Jeans</a></li>
-                              <li><a href="#">Shirts</a></li>
-                              <li><a href="#">Shoes</a></li>
-                              <li><a href="#">School Bags</a></li>
-                              <li><a href="#">Lunch Box</a></li>
-                              <li><a href="#">Footwear</a></li>
-                            </ul>
-                          </div>
-                          <!-- /.col -->
-                          
-                          <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
-                            <h2 class="title">Girls</h2>
-                            <ul class="links">
-                              <li><a href="#">Sandals </a></li>
-                              <li><a href="#">Shorts</a></li>
-                              <li><a href="#">Dresses</a></li>
-                              <li><a href="#">Jwellery</a></li>
-                              <li><a href="#">Bags</a></li>
-                              <li><a href="#">Night Dress</a></li>
-                              <li><a href="#">Swim Wear</a></li>
-                            </ul>
-                          </div>
-                          <!-- /.col -->
-                          
-                          <div class="col-xs-12 col-sm-6 col-md-4 col-menu banner-image"> <img class="img-responsive" src="" alt="" /> </div>
-                          <!-- /.yamm-content --> 
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <li class="dropdown mega-menu"> 
-                <a href="category.html"  data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">Electronics <span class="menu-label hot-menu hidden-xs">hot</span> </a>
-                  <ul class="dropdown-menu container">
-                    <li>
-                      <div class="yamm-content">
-                        <div class="row">
-                          <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
-                            <h2 class="title">Laptops</h2>
-                            <ul class="links">
-                              <li><a href="#">Gaming</a></li>
-                              <li><a href="#">Laptop Skins</a></li>
-                              <li><a href="#">Apple</a></li>
-                              <li><a href="#">Dell</a></li>
-                              <li><a href="#">Lenovo</a></li>
-                              <li><a href="#">Microsoft</a></li>
-                              <li><a href="#">Asus</a></li>
-                              <li><a href="#">Adapters</a></li>
-                              <li><a href="#">Batteries</a></li>
-                              <li><a href="#">Cooling Pads</a></li>
-                            </ul>
-                          </div>
-                          <!-- /.col -->
-                          
-                          <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
-                            <h2 class="title">Desktops</h2>
-                            <ul class="links">
-                              <li><a href="#">Routers and Modems</a></li>
-                              <li><a href="#">CPUs, Processors</a></li>
-                              <li><a href="#">PC Gaming Store</a></li>
-                              <li><a href="#">Graphics Cards</a></li>
-                              <li><a href="#">Components</a></li>
-                              <li><a href="#">Webcam</a></li>
-                              <li><a href="#">Memory (RAM)</a></li>
-                              <li><a href="#">Motherboards</a></li>
-                              <li><a href="#">Keyboards</a></li>
-                              <li><a href="#">Headphones</a></li>
-                            </ul>
-                          </div>
-                          <!-- /.col -->
-                          
-                          <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
-                            <h2 class="title">Cameras</h2>
-                            <ul class="links">
-                              <li><a href="#">Accessories</a></li>
-                              <li><a href="#">Binoculars</a></li>
-                              <li><a href="#">Telescopes</a></li>
-                              <li><a href="#">Camcorders</a></li>
-                              <li><a href="#">Digital</a></li>
-                              <li><a href="#">Film Cameras</a></li>
-                              <li><a href="#">Flashes</a></li>
-                              <li><a href="#">Lenses</a></li>
-                              <li><a href="#">Surveillance</a></li>
-                              <li><a href="#">Tripods</a></li>
-                            </ul>
-                          </div>
-                          <!-- /.col -->
-                          <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
-                            <h2 class="title">Mobile Phones</h2>
-                            <ul class="links">
-                              <li><a href="#">Apple</a></li>
-                              <li><a href="#">Samsung</a></li>
-                              <li><a href="#">Lenovo</a></li>
-                              <li><a href="#">Motorola</a></li>
-                              <li><a href="#">LeEco</a></li>
-                              <li><a href="#">Asus</a></li>
-                              <li><a href="#">Acer</a></li>
-                              <li><a href="#">Accessories</a></li>
-                              <li><a href="#">Headphones</a></li>
-                              <li><a href="#">Memory Cards</a></li>
-                            </ul>
-                          </div>
-                          <div class="col-xs-12 col-sm-12 col-md-4 col-menu custom-banner"> </div>
-                        </div>
-                        <!-- /.row --> 
-                      </div>
-                      <!-- /.yamm-content --> </li>
-                  </ul>
-                </li>
-                <li class="dropdown hidden-sm"> <a href="category.html">Health and Beauty <span class="menu-label new-menu hidden-xs">new</span> </a> </li>
-                <li class="dropdown hidden-sm"> <a href="category.html">Watches</a> </li>
-                <li class="dropdown"> <a href="contact.html">Jewellery</a> </li>
-                <li class="dropdown"> <a href="contact.html">Shoes</a> </li>
-                <li class="dropdown"> <a href="contact.html">Kids and Girls</a> </li>
-                <li class="dropdown"> <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">Pages</a>
-                  <ul class="dropdown-menu pages">
-                    <li>
-                      <div class="yamm-content">
-                        <div class="row">
-                          <div class="col-xs-12 col-menu">
-                            <ul class="links">
-                              <li><a href="home.html">Home</a></li>
-                              <li><a href="category.html">Category</a></li>
-                              <li><a href="detail.html">Detail</a></li>
-                              <li><a href="shopping-cart.html">Shopping Cart Summary</a></li>
-                              <li><a href="checkout.html">Checkout</a></li>
-                              <li><a href="blog.html">Blog</a></li>
-                              <li><a href="blog-details.html">Blog Detail</a></li>
-                              <li><a href="contact.html">Contact</a></li>
-                              <li><a href="sign-in.html">Sign In</a></li>
-                              <li><a href="my-wishlist.html">Wishlist</a></li>
-                              <li><a href="terms-conditions.html">Terms and Condition</a></li>
-                              <li><a href="track-orders.html">Track Orders</a></li>
-                              <li><a href="product-comparison.html">Product-Comparison</a></li>
-                              <li><a href="faq.html">FAQ</a></li>
-                              <li><a href="404.html">404</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <li class="dropdown  navbar-right special-menu"> <a href="#">Todays offer</a> </li>
-              </ul>
-              <!-- /.navbar-nav -->
-              <div class="clearfix"></div>
-            </div>
-            <!-- /.nav-outer --> 
-          </div>
-          <!-- /.navbar-collapse --> 
-          
-        </div>
-        <!-- /.nav-bg-class --> 
-      </div>
-      <!-- /.navbar-default --> 
-    </div>
-    <!-- /.container-class --> 
-    
-  </div>
-  <!-- /.header-nav --> 
-  <!-- ============================================== NAVBAR : END ============================================== --> 
-  
-</header>
+<%@include file="header.jsp" %>
 
 <div class="body-content outer-top-xs">
   <div class="container">
@@ -385,14 +56,24 @@
               <div class="sidebar-widget-body">
                 <ul class="list">
                   <li>
-						<img  id="dp" height="100px"  src="#" >
+						<div id="dp" class="dp"><img id="dp1" height="100px"  src="#" >
+						<span id="tooltiptext" class="tooltiptext"></span></div>
                   	
-					<label class="custom-file-upload" id="no_dp">				
-						<form id="update_img" method="post" action="#" enctype="multipart/form-data">
-							<input type="file"/>
-							<img height="50px" width="50px" src="./images/profile-pic-male_icon.svg"> Add Image
+					<div id="no_dp">		
+					<%if (request.getParameter("imgName") != null) { %>
+						<p style="color:red;"><b>Login again to view uploaded dp</b></p>
+					 <% } else { %>		
+						<form id="update_img" method="post" action="UploadServlet" enctype="multipart/form-data">
+						<label for="dpImg" class="custom-file-upload">
+						    <img height="50px" width="50px" src="./images/profile-pic-male_icon.svg">   Choose File
+						</label>
+							<input type="file"  style="display:none"
+								id="dpImg" name="dpImg" accept=".jpg, .jpeg, .png, .JPG, .PNG, .JPEG" required/>
+							<input type="submit" class="btn btn-warning btn-block" value="Set profile picture"/>
+							<input type="text" id="ID" name="ID" hidden="hidden"/>
 						</form>
-					</label>
+					<% } %>
+					</div>
 				 </li>
                 </ul>
               </div>
@@ -413,9 +94,9 @@
             	
               <div class="sidebar-widget-body">
                 <ul class="list">
-                  <li><h5><a href="#">Profile Information</a></h5></li>
-                  <li><h5><a href="#">Manage Addresses</a></h5></li>
-                  <li><h5><a href="#">Notification Preferences</a></h5></li>
+                  <li><h5><a href="underConstruct.html">Profile Information</a></h5></li>
+                  <li><h5><a href="underConstruct.html">Manage Addresses</a></h5></li>
+                  <li><h5><a href="underConstruct.html">Notification Preferences</a></h5></li>
                 </ul>
               </div>
               <!-- /.sidebar-widget-body --> 
@@ -430,7 +111,7 @@
             	
               <div class="sidebar-widget-body">
                 <ul class="list">
-                  <li><h5><a href="#">My wishlist</a></h5></li>
+                  <li><h5><a href="underConstruct.html">My wishlist</a></h5></li>
                 </ul>
               </div>
               <!-- /.sidebar-widget-body --> 
@@ -455,7 +136,7 @@
       </div>
       <!-- /.sidebar -->
       <div class="col-md-9"> 
-        <!-- ========================================== SECTION – HERO ========================================= -->
+        <!-- ========================================== SECTION â HERO ========================================= -->
 
 		
         <div class="search-result-container ">
@@ -518,7 +199,7 @@
          </div>
 	    <div class="row">
 	      <div class="col-md-5 sidebar"> 
-              <input type="text" class="form-control input-lg"  name="email" id="email" required disabled 
+              <input type="text" class="form-control input-lg"  name="ip_email" id="ip_email" required disabled 
               autocomplete="name" value="Flipkart">
             </div>
          </div>
@@ -538,7 +219,7 @@
 	              
 	    <div class="row">
 	      <div class="col-md-5 sidebar"> 
-              <input type="text" class="form-control input-lg"  name="phone" id="phone" required disabled 
+              <input type="text" class="form-control input-lg"  name="ip_phone" id="ip_phone" required disabled 
               autocomplete="name" value="Flipkart">
             </div>
          </div>
@@ -580,58 +261,89 @@
 </div>
 <!-- /.body-content --> 
 
+<%@include file="footer.jsp" %>
 
-<!-- JavaScripts placed at the end of the document so the pages load faster --> 
-<script src="./bootstrapFiles/js/jquery-1.11.1.min.js"></script> 
-<script src="./bootstrapFiles/js/bootstrap.js"></script>
-<script src="./bootstrapFiles/js/bootstrap.min.js"></script> 
-<script src="./bootstrapFiles/js/bootstrap-hover-dropdown.min.js"></script> 
-<script src="./bootstrapFiles/js/owl.carousel.min.js"></script> 
-<script src="./bootstrapFiles/js/echo.min.js"></script> 
-<script src="./bootstrapFiles/js/jquery.easing-1.3.min.js"></script> 
-<script src="./bootstrapFiles/js/bootstrap-slider.min.js"></script> 
-<script src="./bootstrapFiles/js/jquery.rateit.min.js"></script> 
-<script src="./bootstrapFiles/js/bootstrap-select.min.js"></script> 
-<script src="./bootstrapFiles/js/wow.min.js"></script> 
-<script src="./bootstrapFiles/js/scripts.js"></script>
+
 <script>
 $(document).ready(function() 
 {
-    $("#gender-row").hide();
-    var firstName = "<%=request.getParameter("firstName") %>";
-    var lastName = "<%=request.getParameter("lastName") %>";
-    var email = "<%=request.getParameter("email") %>";
-    var phone = "<%=request.getParameter("phone") %>";
-    var pic_URL = "<%=request.getParameter("pic_URL") %>";
-    <% CreateProperties cp = new CreateProperties(); %>
+	$("#unregistered").hide();
+  var ctxPath = "<%=request.getContextPath()%>";
+	headerFunctions(ctxPath);
+  $("#gender-row").hide();
+	checkCookie();	
+});
+
+function checkCookie() 
+{
+    var user = getCookie("user_details");
+    if (user != "") 
+    {
+		setCookie("user_details", user, 10);
+		diplayUser(JSON.parse(user));
+    } 
+    else 
+    {
+    	logout();
+    }
+}
+
+function resetCookie() 
+{
+    var user = getCookie("user_details");
+    if (user != "") 
+    {
+		setCookie("user_details", user, 10);
+		diplayUser(JSON.parse(user));
+    } 
+    else 
+    {
+    	logout();
+    }
+}
+
+$("#dp1").hover(function(){
+	$("#tooltiptext").show();
+    $("#tooltiptext").text($("#ip_email").val()+"\n"+$("#userID").text());
+});
+
+function diplayUser(user)
+{
+	$('#firstName').val(user.firstName);
+	$('#lastName').val(user.lastName);
+	$('#ip_email').val(user.email);
+	$('#ID').val(user.id);
+	$('#ip_phone').val(user.phone);
+
+	$('#userID').html(user.firstName+" "+user.lastName);
+<%--     <% CreateProperties cp = new CreateProperties(); %> --%>
     <% AccessProperties ap = new AccessProperties(); %>
     var imgServerURL = "<%=ap.getImageServerURL() %>"; 
-	$('#firstName').val(firstName);
-	$('#lastName').val(lastName);
-	$('#email').val(email);
-	$('#phone').val(phone);
-	$('#userID').html(firstName+" "+lastName);
-	if(pic_URL===null || pic_URL.length===0)
+
+	if(!("pic_URL" in user) || user.pic_URL=="")
+
 	{	
 		$("#no_dp").show();
 		$("#dp").hide();
 	}
 	else
 	{	
-        $('#dp').attr('src',imgServerURL+pic_URL);
+        $('#dp1').attr('src',imgServerURL+user.pic_URL);
 		$("#dp").show();
 		$("#no_dp").hide();
 	}
-    
-});
+}
+
 function logout()
 {
 	deleteCookie("user_details");
 }
 
-function deleteCookie(cname) 
+$('#dpImg').change(function()
 {
-    document.cookie = cname + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
-};
+	var i = $(this).prev('label').clone();
+	var file = $('#dpImg')[0].files[0].name;
+	$(this).prev('label').text(file);
+});
 </script>
 </body></html>

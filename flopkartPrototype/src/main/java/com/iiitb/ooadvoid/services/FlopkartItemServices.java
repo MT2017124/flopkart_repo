@@ -13,7 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import com.iiitb.ooadvoid.pojo.FlopkartItem;
+import com.iiitb.ooadvoid.pojo.FlopkartSubcategory;
 import com.iiitb.ooadvoid.dao.FlopkartItemDAO;
+import com.iiitb.ooadvoid.dao.FlopkartSubcategoryDAO;
 
 @Path("/items")
 public class FlopkartItemServices 
@@ -28,29 +30,26 @@ public class FlopkartItemServices
 		return items;
 	}
 
-	
-	@POST
-	@Path("/categoty")
-	@Consumes("application/json")
-	@Produces("application/json")
-	public FlopkartItem getFlopkartItemByCategoty(FlopkartItem item)
+	@GET
+	@Path("/availableListing/{id}")
+	@Produces("text/plain")
+	public int countFlopkartAvailableItemsByListingId(@PathParam("id") int listingid)
 	{
 		FlopkartItemDAO dao = new FlopkartItemDAO();
-		FlopkartItem item_details = (FlopkartItem) dao.getFlopkartItemByCategoty(item);
-		return item_details;
-	}	
+		List<FlopkartItem> items = dao.getFlopkartAvailableItemsByListingId(listingid);
+		if(items.isEmpty()) {
+			return 0;
+		}
+		return items.size();
+	}
+	
 	
 	@POST
 	@Path("/create")
 	@Consumes("application/json")
 	public Response addFlopkartItem(FlopkartItem item)
 	{
-			item.setItemid(item.getItemid());
-			item.setItemname(item.getItemname());
-			item.setCategory(item.getCategory());
-			item.setPrice(item.getPrice());
-			item.setDiscount(item.getDiscount());
-			item.setStars(item.getStars());
+			item.setListingid(item.getListingid());
 		
 		FlopkartItemDAO dao = new FlopkartItemDAO();
 		dao.addFlopkartItem(item);
@@ -84,5 +83,20 @@ public class FlopkartItemServices
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 		return Response.ok().build();
+	}
+	
+
+	
+	@GET
+	@Path("/listing/{id}")
+	@Produces("application/json")
+	public List<FlopkartItem> getFlopkartAvailableItemsByListingId(@PathParam("id") int id)
+	{
+		FlopkartItemDAO dao = new FlopkartItemDAO();
+		List<FlopkartItem> items = dao.getFlopkartAvailableItemsByListingId(id);
+		if(items==null)
+			return null;
+		else
+			return items;
 	}
 }

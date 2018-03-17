@@ -4,16 +4,14 @@
 <hibernate-mapping>
 	 <class name="com.iiitb.ooadvoid.pojo.FlopkartItem" table="flopkartItem"  dynamic-update="true">
       
-      <id name = "id" type = "int" column = "id">
+      <id name = "id" type = "int" column = "ID">
          <generator class="native"/>
       </id>
       
-      <property name = "itemid" column = "itemid" type = "string"  unique="true"/>
-      <property name = "itemname" column = "itemname" type = "string"/>
-      <property name = "category" column = "category" type = "string"/>
-      <property name = "price" column = "price" type = "integer"/>
-      <property name = "discount" column = "discount" type = "integer"/>
-      <property name = "stars" column = "stars" type = "integer"/>
+      <property name = "Listingid" column = "ListingId" type = "int"  />
+      <property name = "CartId" column = "CartId" type = "int"/>
+      <property name = "OrderId" column = "OrderId" type = "int"/>
+       <property name = "status" column = "status" type = "string"/>
 	 
 	</class>
 </hibernate-mapping>

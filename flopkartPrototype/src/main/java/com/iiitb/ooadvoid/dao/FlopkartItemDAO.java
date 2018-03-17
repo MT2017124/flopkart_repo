@@ -15,22 +15,21 @@ public class FlopkartItemDAO extends HibernateDAO<FlopkartItem>
 		return item;
 	}
 	
-	
+	public List<FlopkartItem> getFlopkartAvailableItemsByListingId(int listingid)
+	{
+		return super.findAll(entity_name, "listingid", listingid, "status", "Available");
+	}
+
 	public List<FlopkartItem> getFlopkartItems()
 	{
-		return super.list(entity_name);
+		return super.list(new FlopkartItem());
 	}
 
 	public FlopkartItem getFlopkartItemById(int id)
 	{
-		return super.find(entity_name,id);
+		return super.find(new FlopkartItem(),id);
 	}
-
-    public List<FlopkartItem> getFlopkartItemByCategoty(FlopkartItem item)
-	{
-		return super.findAll(entity_name,"category", item.getCategory());
-	}
-
+   
 	public int deleteFlopkartItem(int id)
 	{
 		return super.remove(entity_name,id);

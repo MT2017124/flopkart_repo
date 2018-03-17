@@ -1,7 +1,6 @@
 package com.iiitb.ooadvoid.services;
 
 import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,11 +20,21 @@ public class FlopkartUserServices
 
 	@GET
 	@Produces("application/json")
-	public List<FlopkartUser> getFlopkart_Users()
+	public List<FlopkartUser> getFlopkartUsers()
 	{
 		FlopkartUserDAO dao = new FlopkartUserDAO();
 		List<FlopkartUser> users = dao.getFlopkartUsers();
 		return users;
+	}
+
+	@GET
+	@Path("/{id}")
+	@Produces("application/json")
+	public FlopkartUser getFlopkartUserById(@PathParam("id") int id)
+	{
+		FlopkartUserDAO dao = new FlopkartUserDAO();
+		FlopkartUser user = dao.getFlopkartUserById(id);
+		return user;
 	}
 
 	
@@ -33,7 +42,7 @@ public class FlopkartUserServices
 	@Path("/email")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public FlopkartUser getFlopkart_UserbyEmail(FlopkartUser user)
+	public FlopkartUser getFlopkartUserbyEmail(FlopkartUser user)
 	{
 		FlopkartUserDAO dao = new FlopkartUserDAO();
 		FlopkartUser user_details = dao.getFlopkartUserByEmail(user);
@@ -45,22 +54,11 @@ public class FlopkartUserServices
 			return user_details;
 	}	
 	
-/*	@POST
-	@Path("/guest")
-	@Consumes("application/json")
-	@Produces("application/json")
-	public FlopkartUser getFlopkart_UserGuest()
-	{
-		FlopkartUserDAO dao = new FlopkartUserDAO();
-		FlopkartUser user_details = dao.getFlopkart_UserGuest();
-		return user_details;
-	}*/
-	
 	@POST
 	@Path("/phone")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public FlopkartUser getFlopkart_UserbyPhone(FlopkartUser user)
+	public FlopkartUser getFlopkartUserbyPhone(FlopkartUser user)
 	{
 		FlopkartUserDAO dao = new FlopkartUserDAO();
 		FlopkartUser user_details = dao.getFlopkartUserByPhone(user);
@@ -72,12 +70,12 @@ public class FlopkartUserServices
 			return user_details;
 	}
 	
+	
 	@POST
 	@Path("/create")
 	@Consumes("application/json")
 	public Response addFlopkartUser(FlopkartUser user)
 	{
-			user.setUserID(user.getUserID());
 			user.setFirstName(user.getFirstName());
 			user.setLastName(user.getLastName());
 			user.setUserType(user.getUserType());
@@ -90,15 +88,13 @@ public class FlopkartUserServices
 		dao.addFlopkartUser(user);
 
 		return Response.ok().build();
-	}
-
-	@PUT
+	}	@PUT
 	@Path("/update/{id}")
 	@Consumes("application/json")
-	public Response updateFlopkart_User(@PathParam("id") int id, FlopkartUser user)
+	public Response updateFlopkartUser(@PathParam("id") int id, FlopkartUser user)
 	{
 		FlopkartUserDAO dao = new FlopkartUserDAO();
-		int count = dao.updateFlopkart_User(id, user);
+		int count = dao.updateFlopkartUser(id, user);
 		if (count == 0)
 		{
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -109,7 +105,7 @@ public class FlopkartUserServices
 	@DELETE
 	@Path("/delete/{id}")
 	@Consumes("application/json")
-	public Response deleteFlopkart_User(@PathParam("id") int id)
+	public Response deleteFlopkartUser(@PathParam("id") int id)
 	{
 		FlopkartUserDAO dao = new FlopkartUserDAO();
 		int count = dao.deleteFlopkartUser(id);

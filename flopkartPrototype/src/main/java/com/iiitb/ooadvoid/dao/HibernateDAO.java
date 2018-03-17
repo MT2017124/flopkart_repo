@@ -19,11 +19,38 @@ public class HibernateDAO<E>
 	{
 		session = SessionUtil.getSession();
 		tx = session.beginTransaction();
-		session.save(entity);
+		session.persist(entity);
+		session.flush();
 		tx.commit();
 		session.close();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<E> list(E ent)
+	{
+
+		session = SessionUtil.getSession();
+		session.flush();
+		Query query = session.createQuery("from "+ent.getClass().getName());
+		List<E> entity = query.list();
+		session.flush();
+		session.close();
+		return entity;
+	}
+	
+	public E find(E entity, int id)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		tx = session.beginTransaction();
+		@SuppressWarnings("unchecked")
+		E ent = (E) session.get(entity.getClass(), new Integer(id));
+		tx.commit();
+		session.flush();
+		session.close();
+		return ent;
+	}
+	
 	public void update(E entity, int id)
 	{
 		session = SessionUtil.getSession();
@@ -47,51 +74,24 @@ public class HibernateDAO<E>
         } 
         catch (NoSuchFieldException e) 
         {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
         catch (SecurityException e) 
         {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
         catch (IllegalArgumentException e) 
         {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         catch (IllegalAccessException e) 
         {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		update(entity, id, fields);
 		tx.commit();
+		session.flush();
 		session.close();
-	}
-
-	public void update(String entity_name, int id, List<String> param, List<String> val)
-	{
-		String conjunction = "";
-		String set_clause = "";
-		String hql ="";
-		int i=0;
-		for(String p :param)
-		{
-			set_clause += conjunction+p +" = :param"+i;
-			i++;
-			conjunction=", ";
-		}
-		hql = "update "+entity_name+" set "+set_clause+" where id = :id";
-		Query query = session.createQuery(hql);
-		i=0;
-		for(String v :val)
-		{
-			query.setParameter("param"+i, v);
-			i++;
-		}
-		query.setParameter("id", id);
-		query.executeUpdate();
 	}
 
 	public void update(E entity, int id, List<Field> fields)
@@ -109,6 +109,7 @@ public class HibernateDAO<E>
 				conjunction=", ";
 			}
 			hql = "update "+entity.getClass().getName()+" set "+set_clause+" where id = :id";
+			session.flush();
 			Query query = session.createQuery(hql);
 			i=0;
 			for(Field p :fields)
@@ -125,42 +126,31 @@ public class HibernateDAO<E>
 		}
 	}
 	
-	
 	public int remove(String entity_name, int key)
 	{
 		session = SessionUtil.getSession();
 		tx = session.beginTransaction();
+		session.flush();
 		String hql = "delete from "+entity_name+" where id = :id";
 		Query query = session.createQuery(hql);
 		query.setInteger("id", key);
 		int rowCount = query.executeUpdate();
 		tx.commit();
+		session.flush();
 		session.close();
 		return rowCount;
-	}
-
-	@SuppressWarnings("unchecked")
-	public E find(String entity_name, int key)
-	{
-		session = SessionUtil.getSession();
-		String hql = "from "+ entity_name + " where id = :key";
-		Query query = session.createQuery(hql);
-		query.setParameter("key", key);
-		List<E> entity = query.list();
-		session.close();
-		if (entity.size() == 0)
-			return null;
-		return entity.get(0);
 	}
 
 	@SuppressWarnings("unchecked")
 	public E find(String entity_name, String param, String val)
 	{
 		session = SessionUtil.getSession();
+		session.flush();
 		String hql = "from "+ entity_name + " where "+param+" = :val";
 		Query query = session.createQuery(hql);
 		query.setParameter("val", val);
 		List<E> entity = query.list();
+		session.flush();
 		session.close();
 		if (entity.size() == 0)
 			return null;
@@ -171,39 +161,61 @@ public class HibernateDAO<E>
 	public E find(String entity_name, String param1, String val1, String param2, String val2)
 	{
 		session = SessionUtil.getSession();
+		session.flush();
 		String hql = "from "+ entity_name + " where "+param1+" = :val1" + " and "+param2+" = :val2";
 		Query query = session.createQuery(hql);
 		query.setParameter("val1", val1);
 		query.setParameter("val2", val2);
 		List<E> entity = query.list();
+		session.flush();
 		session.close();
 		if (entity.size() == 0)
 			return null;
 		return entity.get(0);
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	public List<E> findAll(String entity_name, String param1, String val1)
+	public List<E> findAll(String entity_name, String param1, int val1)
 	{
 		session = SessionUtil.getSession();
+		session.flush();
 		String hql = "from "+ entity_name + " where "+param1+" = :val1";
 		Query query = session.createQuery(hql);
 		query.setParameter("val1", val1);
 		List<E> entity = query.list();
+		session.flush();
 		session.close();
 		return entity;
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	public List<E> list(String entity_name)
+	public List<E> findAll(String entity_name, String param1, int val1, String param2, int val2)
 	{
-
 		session = SessionUtil.getSession();
-		Query query = session.createQuery("from "+entity_name);
+		session.flush();
+		String hql = "from "+ entity_name + " where "+param1+" = :val1" + " and "+param2+" = :val2";
+		Query query = session.createQuery(hql);
+		query.setParameter("val1", val1);
+		query.setParameter("val2", val2);
 		List<E> entity = query.list();
+		session.flush();
 		session.close();
 		return entity;
-//		return currentSession().createCriteria(daoType).list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<E> findAll(String entity_name, String param1, int val1, String param2, String val2)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from "+ entity_name + " where "+param1+" = :val1" + " and "+param2+" = :val2";
+		Query query = session.createQuery(hql);
+		query.setParameter("val1", val1);
+		query.setParameter("val2", val2);
+		List<E> entity = query.list();
+		session.flush();
+		session.close();
+		return entity;
 	}
 
 }

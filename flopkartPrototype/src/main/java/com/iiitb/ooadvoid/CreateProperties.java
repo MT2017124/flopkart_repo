@@ -15,13 +15,13 @@ public class CreateProperties
 
 		try
 		{
-
+//			System.out.println(System.getProperty("user.dir"));
 			output = new FileOutputStream("config.properties");
 
 			// set the properties value
 			prop.setProperty("serverURL", "http://127.0.0.1:8080/");
 			prop.setProperty("imageServerURL", "http://127.0.0.1:8887/");
-			prop.setProperty("serverPath", "D:\\Sem 2\\OOAD\\Image Server\\");
+			prop.setProperty("serverPath", "/Users/MinnuAnn/ooad_pics/");
 
 			// save properties to project root folder
 			prop.store(output, null);

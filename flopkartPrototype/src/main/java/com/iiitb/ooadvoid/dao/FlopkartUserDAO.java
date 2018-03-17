@@ -15,22 +15,25 @@ public class FlopkartUserDAO extends HibernateDAO<FlopkartUser>
 		super.add(user);
 		return user;
 	}
-	
-	
+
 	public List<FlopkartUser> getFlopkartUsers()
 	{
-		return super.list(entity_name);
+		return super.list(new FlopkartUser());
 	}
 
 	public FlopkartUser getFlopkartUserById(int id)
 	{
-		return super.find(entity_name,id);
+		return super.find(new FlopkartUser(),id);
 	}
 
     public FlopkartUser getFlopkartUserByEmail(FlopkartUser user)
 	{
 		return super.find(entity_name,"email", user.getEmail());
 	}
+    
+    public FlopkartUser getFlopkartSellerByEmail(FlopkartUser user) {
+    	return super.find(entity_name,"email", user.getEmail());
+    }
 
 	public FlopkartUser getFlopkartUserByPhone(FlopkartUser user)
 	{
@@ -42,7 +45,7 @@ public class FlopkartUserDAO extends HibernateDAO<FlopkartUser>
 		return super.remove(entity_name,id);
 	}
 
-	public int updateFlopkart_User(int id, FlopkartUser user)
+	public int updateFlopkartUser(int id, FlopkartUser user)
 	{
 		if (id <= 0)
 			return 0;	

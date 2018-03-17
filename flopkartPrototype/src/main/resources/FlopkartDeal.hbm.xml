@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="com.iiitb.ooadvoid.pojo.FlopkartDeal" table="FlopkartDeal">
+	 
+      <meta attribute = "class-description">
+         This class contains the Flopkart Deal detail. 
+      </meta>
+      
+      <id name = "id" type = "int" column = "id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "dealname" column = "dealname" type = "string" unique="true"/>
+	 
+	</class>
+</hibernate-mapping>

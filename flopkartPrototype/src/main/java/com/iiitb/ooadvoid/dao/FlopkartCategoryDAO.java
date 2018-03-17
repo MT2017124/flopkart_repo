@@ -17,12 +17,12 @@ public class FlopkartCategoryDAO extends HibernateDAO<FlopkartCategory>
 	
 	public List<FlopkartCategory> getFlopkartCategories()
 	{
-		return super.list(entity_name);
+		return super.list(new FlopkartCategory());
 	}
 
 	public FlopkartCategory getFlopkartCategoryById(int id)
 	{
-		return super.find(entity_name,id);
+		return super.find(new FlopkartCategory(),id);
 	}
 
 	public int deleteFlopkartCategory(int id)

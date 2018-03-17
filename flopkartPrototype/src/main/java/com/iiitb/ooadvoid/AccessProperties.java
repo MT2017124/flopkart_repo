@@ -83,9 +83,9 @@ public class AccessProperties
 			prop.load(input);
 
 			// get the property value and print it out
-			System.out.println(prop.getProperty("serverURL"));
-			System.out.println(prop.getProperty("imageServerURL"));
-			System.out.println(prop.getProperty("serverPath"));
+//			System.out.println(prop.getProperty("serverURL"));
+//			System.out.println(prop.getProperty("imageServerURL"));
+//			System.out.println(prop.getProperty("serverPath"));
 			this.setServerURL(prop.getProperty("serverURL"));
 			this.setImageServerURL(prop.getProperty("imageServerURL"));
 			this.setServerPath(prop.getProperty("serverPath"));

@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 public class FlopkartUser
 {
 	private int id;
-	private String userID;
 	private String firstName;
 	private String lastName;
 	private String userType;
@@ -34,16 +33,6 @@ public class FlopkartUser
 	public void setFirstName(String firstName)
 	{
 		this.firstName = firstName;
-	}
-
-	public String getUserID()
-	{
-		return userID;
-	}
-
-	public void setUserID(String userID)
-	{
-		this.userID = userID;
 	}
 
 	public String getPic_URL()
