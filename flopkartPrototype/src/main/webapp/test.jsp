@@ -9,9 +9,7 @@
      
     <%@include file="header.jsp" %>
      
-    <hr/>
-    <h2>This is main content</h2>
-    <hr/>
+  
      
     <%@include file="footer.jsp" %>
      

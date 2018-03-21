@@ -156,7 +156,22 @@ public class HibernateDAO<E>
 			return null;
 		return entity.get(0);
 	}
-
+	
+	public E find(String entity_name, String param, int val)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from "+ entity_name + " where "+param+" = :val";
+		Query query = session.createQuery(hql);
+		query.setParameter("val", val);
+		@SuppressWarnings("unchecked")
+		List<E> entity = query.list();
+		session.flush();
+		session.close();
+		if (entity.size() == 0)
+			return null;
+		return entity.get(0);
+	}
 	@SuppressWarnings("unchecked")
 	public E find(String entity_name, String param1, String val1, String param2, String val2)
 	{
@@ -176,6 +191,20 @@ public class HibernateDAO<E>
 	
 	@SuppressWarnings("unchecked")
 	public List<E> findAll(String entity_name, String param1, int val1)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from "+ entity_name + " where "+param1+" = :val1";
+		Query query = session.createQuery(hql);
+		query.setParameter("val1", val1);
+		List<E> entity = query.list();
+		session.flush();
+		session.close();
+		return entity;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<E> findAll(String entity_name, String param1, String val1)
 	{
 		session = SessionUtil.getSession();
 		session.flush();
