@@ -127,15 +127,15 @@
 								<!-- /.single-product-gallery -->
 								<div class="buynowdiv">
 									<form action="buyNow.jsp">
-										<button id="buynow" onclick="return checkLogin()" class="buynow">Buy Now</button>
-										<a href="#" onmouseover="style='color:white'" class="addtocart" id="addtocart">Add to cart </a>
+										<button id="buynow" onclick="return addToCart()" class="buynow">Buy Now</button>
+										<button id="buynow_incart" class="buynow">Buy Now</button>
+										<a href="#" onclick="return addToCart()" onmouseover="style='color:white'" class="addtocart" id="addtocart">Add to cart </a>
 										<a href="cart.jsp" onmouseover="style='color:white'" class="addtocart" id="gotocart">Go to cart </a>
 										<input type="text" name="listingid"
 											value='<%=request.getParameter("id")%>' hidden="hidden">
 										<input type="number" id="quant" name="quant" hidden="hidden">
 										<input type="text" name="listingname" id="listingname"
-											hidden="hidden"> <input type="number"
-											id="listingamount" name="listingamount" hidden="hidden">
+											hidden="hidden"> 
 										<input type="number" id="listingdiscount"
 											name="listingdiscount" hidden="hidden"> <input
 											type="text" id="sellername" name="sellername" hidden="hidden">
@@ -150,35 +150,52 @@
 							<div class='col-sm-6 col-md-7 product-info-block'>
 								<div class="product-info" id="product-info">
 									<h1 class='name' id='product_title'></h1>
-									<div class='rating-reviews m-t-20'>
-										<div class='row'>
-											<div class='col-sm-3'>
-												<div class='rating rateit-small'></div>
-											</div>
-											<div class='col-sm-8'>
-												<div class='reviews'>
-													<a href='#' class='lnk'></a>
-												</div>
-											</div>
+									
+									<div class="row">
+						            <div class="col-sm-4" id="seller_rating" style="padding-right:0px;">
+						                 <span style="font-size:14px">Seller Rating : </span>
+						                 <span style="font-size:16px" class='fa fa-star'></span>
+						                 <span style="font-size:16px" class='fa fa-star'></span>
+						                 <span style="font-size:16px" class='fa fa-star'></span>
+						                 <span style="font-size:16px" class='fa fa-star'></span>
+						                 <span style="font-size:16px" class='fa fa-star'></span>
+						            </div>
+						            
+						            <div class="col-sm-5" id="seller_rating_unavailable" style="font-size:14px" hidden="hidden">
+						                 <span style=" font-size:14px;">Seller Rating : </span>
+                                         <span style="color:red; font-size:14px;"> Not enough Ratings</span> 
+						            </div>
+						          <div class="col-sm-5" style="color:blue;"> 
+						          <span id="seller_rating_total" style="font-size:14px"></span>
+						            <span id="seller_rating_customers" style="font-size:14px"></span></div></div>
+						            
+						            <div class="row" style="padding-top:9px;">
+										<div class="col-sm-2" style="padding-right:0px;">
+											<span style="font-size:14px">Item id </span>
 										</div>
+										<div class="col-sm-8" style="padding-left:0px;">
+											<span style="font-size:14px" id='product_id'></span>
+										</div>
+										<div class="col-sm-4" style="padding-right:0px;"></div>
 									</div>
 									<div class='stock-container info-container m-t-10'>
 										<div class='row'>
-											<div class='col-sm-2'>
-												<div class='stock-box'>
-													<span class='label'>Availability :</span>
+											<div class='col-sm-2' >
+												<div class='stock-box' style="padding-left:0px">
+													<span  style="font-size:14px">Availability </span>
 												</div>
 											</div>
-											<div class='col-sm-9'>
-												<div class='stock-box'>
-													<span style="color: red; font-size: 15px" id='available'></span>
+											<div class='col-sm-9' style="padding-left:0px">
+												<div class='stock-box' style="padding-left:0px">
+													<span style="color: red; font-size: 14px" id='available'></span>
 													<span hidden="hidden" id='available_quant'></span>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class='description-container m-t-20'
-										style="font-size: 15px" id='itemdescription'></div>
+										style="font-size: 14px " id='itemdescription'>
+									</div>
 									<div class='price-container info-container m-t-20'>
 										<div class='row'>
 											<div class='col-sm-6'>
@@ -191,8 +208,8 @@
 														<i class='fa fa-rupee-sign'></i> <span id='price-strike'></span>
 													</div>
 												</div>
-												<div style='font-size: 15px; color: blue' id='discount'></div>
-												<div style='font-size: 20px; color: purple' id='dealname'></div>
+												<div style='font-size: 14px; color: blue' id='discount'></div>
+												<div style='font-size: 15px; color: purple' id='dealname'></div>
 											</div>
 											<div class='col-sm-6'>
 												<div class='favorite-button m-t-10'>
@@ -263,7 +280,8 @@
 <%@include file="footer.jsp"%>
 
 <script>
-$(document).ready(function(){
+$(document).ready(function()
+{
 	$("#quantity").val("1");
 	$("#quant").val("1");
 	<%AccessProperties ap = new AccessProperties();%>
@@ -279,30 +297,37 @@ $(document).ready(function(){
 			url : ctxPath + "/webapi/listings/"+listingid,
 			dataType : "json", // data type of response
 			success : function(listing_json){
-				if(listing_json.quantity==0)
+				if(listing_json.quantity<1)
 				{
 					$("#available").text("Out of Stock");
 					$("#buynow").hide();
 					$("#addtocart").hide();
+					$("#gotocart").hide();	
+					$("#buynow_incart").hide();	
 					
 				}
 				else
 				{
-					$("#available").text("In Stock "+"("+listing_json.quantity+")");
+					$("#available").text(" : In Stock "+"("+listing_json.quantity+")");
 					$("#available_quant").text(listing_json.quantity);
 				}
 				var amount = listing_json.price - (listing_json.discount*listing_json.price/100);
 				$("#product_title").text(listing_json.listingName);
+				$("#product_id").text(" : " +listing_json.itemId);
 				$("#itemdescription").text(listing_json.description);
 				$("#discountedprice").text(amount);
 				$("#price-strike").text(listing_json.price);
 				$("#discount").text("Discount: "+listing_json.discount+"%");
-				$("#listingamount").val(listing_json.price);
 				$("#listingquant").val(listing_json.quantity);
 				$("#listingdiscount").val(listing_json.discount);
 				$("#listingname").val(listing_json.listingName);
 				$("#itemid").val(listing_json.itemId);
-				
+				$("#gotocart").hide();	
+				$("#buynow_incart").hide();	
+				if(getCookie("user_details")!="") 
+				{
+					getCartId(ctxPath, listing_json.itemId);
+				}			
 				var img_data = "<div id='owl-single-product'>"+
 				"    <div class='single-product-gallery-item' id='slide1'>"+
 				"        <a data-lightbox='image-1' data-title='Gallery' href='"+imgServerURL+listing_json.imgUrl+"'>"+
@@ -312,6 +337,7 @@ $(document).ready(function(){
 				"</div>";
 				$("#gallery").html(img_data);
 // 				alert(JSON.stringify(listing_json));
+                rating(ctxPath,listing_json.sellerid);
 				$.ajax({
 					type : 'GET',
 					contentType : 'application/json',
@@ -319,7 +345,7 @@ $(document).ready(function(){
 					dataType : "json", // data type of response
 					success : function(seller_json)
 					{
-						var sellerData = "<div id='sellerData' style='color:green; font-size:15px'>Seller name:   "+seller_json.firstName+" "+seller_json.lastName+" (id: "+listing_json.sellerid+" )</span>";
+						var sellerData = "<div id='sellerData' style='color:green; font-size:15px'>Seller name:   "+seller_json.firstName+" "+seller_json.lastName+" (id: "+seller_json.email+" )</span>";
 						$("#product-info").append(sellerData);
 						//alert(seller_json.firstName+" "+seller_json.lastName);
 						$("#sellername").val(seller_json.firstName+" "+seller_json.lastName);
@@ -356,8 +382,42 @@ $(document).ready(function(){
 	    	}
 		});
 		
-		$("#gotocart").hide();
 });
+
+
+function getCartId(ctxPath, itemId) 
+{
+	var listingid = "<%=request.getParameter("id")%>";
+	$.ajax(
+		{
+			type : 'POST',
+			contentType : 'application/json',
+			url : ctxPath + "/webapi/cart/user/listingid/"+listingid,
+			data : itemToJSON(itemId, 0),
+			success : function(cart,status,code) 
+			{
+				//nocontent
+				cartCheck(code.status);
+			},
+			error: function() 
+			{
+				swal(JSON.stringify(err));
+			}
+	});
+}
+
+
+function cartCheck(status) 
+{
+	if(JSON.stringify(status)!="204" && ($("#available").text()!="Out of Stock"))
+	{
+		$("#addtocart").hide();
+		$("#gotocart").show();
+		$("#buynow_incart").show();
+		$("#buynow").hide();
+		
+	}
+}
 
 $("#quant-up").click(function(){
 	$("#quantwarning").hide();
@@ -429,7 +489,7 @@ function getDealName(ctxPath){
 			url : ctxPath + "/webapi/deals/"+dealid,
 			dataType : "json", // data type of response
 			success : function(deal){
-				$("#dealname").text("SUPER DEAL: "+deal.dealname+"!");
+				$("#dealname").html("SUPER DEAL: "+deal.dealname+"!"+"&nbsp; &nbsp; <a class='btn btn-primary' href='offerZoneDeal.jsp?id="+dealid+"'> Avail Deal </a>");
 			},
 			error: function(){
 				//alert("error occurred"); 
@@ -459,7 +519,7 @@ function itemToJSON()
 	    "itemId" : itemId,
 	    "quantity" : quant
 	});
-	alert(flopkartCart);
+//	alert(flopkartCart);
 	return flopkartCart;
 }
 
@@ -469,11 +529,12 @@ function successCart(){
 	$("#gotocart").show();
 }
 
-$("#addtocart").click(function(){
+function addToCart()
+{
 	if(getCookie("user_details")=="") 
 	{
 		swal("Please Login");
-		return;
+		return false;
 	}
 	var ctxPath = "<%=request.getContextPath()%>";
 	$.ajax(
@@ -487,6 +548,59 @@ $("#addtocart").click(function(){
 				swal(JSON.stringify(err));
 			}
 	});
-});
+}
+
+function rating(ctxPath,id)
+{
+	$.ajax({
+		type : 'GET',
+		url : ctxPath + "/webapi/reviews/seller/"+id,
+		dataType : "json", // data type of response
+		success : function(results){
+			if(results.length==0)
+				{
+				   $("#seller_rating").hide()
+				   $('#seller_rating_total').hide()
+				   $('#seller_rating_customers').hide()
+				   $("#seller_rating_unavailable").show()
+				}
+			else
+				{
+				   var sum=0;
+				   for(var i in results)
+					   sum=sum+results[i].stars
+				   var data = "<span> ( </span> <span>"+sum+" stars</span>";
+				   $('#seller_rating_total').append(data);
+				   data = "</span><span> / </span><span>"+results.length+" customer ratings</span> <span> ) </span>";
+				   $('#seller_rating_customers').append(data);
+				   var val = Math.round(sum/results.length);
+				   renderSeller(val);
+				}
+		},
+		error: function(){
+			//alert("error occurred"); 
+		}
+	});
+}
+function renderSeller(val)
+{
+	var color;
+	if(val<=2)
+		color = "red";
+	else if(val<=4)
+		color = "orange";
+	else
+		color = "green";
+	var stars =$("#seller_rating").find("span");
+	var i;
+	for(i=1;i<val+1;i++)
+		{
+		   $(stars[i]).css('color',color);
+		}
+	for(;i<6;i++)
+	{
+	   $(stars[i]).css('color','black');
+	}
+}
 </script>
 </html>
